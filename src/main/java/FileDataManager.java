@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Set;
 
 public class FileDataManager extends AbstractDataManager{
@@ -43,9 +44,35 @@ public class FileDataManager extends AbstractDataManager{
 	}
 
 	@Override
-	public Set<String> getFriendList(String username) {
-		// TODO Auto-generated method stub
-		return null;
+	public Set<String> getFriendList(String username) throws RetryableException, NonRetryableException {
+		File file = new File("friendList.txt");
+		Set<String> friends = new HashSet<>();
+		if(!file.exists()) {
+			throw new NonRetryableException();
+		}
+		BufferedReader br;
+		try {
+			br = new BufferedReader(new FileReader(file));
+			String line;
+			while ((line = br.readLine()) != null) {
+			    String[] arr = line.split(" ");
+			    if(arr[0].equals(username)){
+			    	for(int i=1;i<arr.length;i++){
+			    		friends.add(arr[i]);
+			    	}
+			    }
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new RetryableException();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new RetryableException();
+		}
+		
+		return friends;
 	}
 
 }

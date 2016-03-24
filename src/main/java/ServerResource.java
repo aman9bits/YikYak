@@ -28,7 +28,9 @@ import io.dropwizard.validation.Validated;
 @Path("/")
 public class ServerResource {
 
-	 private static final Logger LOGGER = LoggerFactory.getLogger(ServerResource.class);
+	//@Inject
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ServerResource.class);
 	 
 	@GET
 	@Path("/test2")
@@ -90,11 +92,22 @@ public class ServerResource {
 	}
 	
 	@GET
-	@Path("/getFriendList")
-	public Set<String> getFriendList(String username){
+	@Path("/getFriendList/{username}")
+	public Response getFriendList(@PathParam(value = "username") String username){
 		AbstractDataManager manager = new FileDataManager();
-		Set<String> result = manager.getFriendList(username);
-		return result;
+		Set<String> result;
+		try {
+			result = manager.getFriendList(username);
+		} catch (RetryableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Some error occurred. Please try later.").build();
+		} catch (NonRetryableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return Response.status(Response.Status.OK).entity("No friends found.").build();
+		}
+		return Response.status(Response.Status.OK).entity(result.toString()).build();
 	}
 	
 	@GET

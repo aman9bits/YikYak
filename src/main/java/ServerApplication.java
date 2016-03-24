@@ -21,7 +21,6 @@ public class ServerApplication extends Application<ServerConfiguration> {
     public void run(ServerConfiguration configuration, Environment environment) {
     	final ServerResource resource = new ServerResource();
     	environment.jersey().register(resource);
-    	
     	environment.jersey().register(new AuthDynamicFeature(
                 new BasicCredentialAuthFilter.Builder<User>()
                     .setAuthenticator(new SimpleAuthenticator())
