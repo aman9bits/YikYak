@@ -19,6 +19,7 @@ public class FileDataManager extends AbstractDataManager{
     		}
 			FileOutputStream fout = new FileOutputStream(file,true);
 			fout.write((user+System.getProperty("line.separator")).getBytes());
+			fout.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -73,6 +74,65 @@ public class FileDataManager extends AbstractDataManager{
 		}
 		
 		return friends;
+	}
+
+	@Override
+	public void addFriend(String first, String second) throws RetryableException {
+		File file = new File("friendList.txt");
+		if(!file.exists()) {
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				throw new RetryableException();
+			}
+		}
+		
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			String line;
+			while ((line = br.readLine()) != null) {
+			    String[] arr = line.split(" ");
+			    if(arr[0].equals(first)){
+			    	for(int i=1;i<arr.length;i++){
+			    		if(arr[i].equals(second)){
+			    			return;
+			    		}
+			    	}
+			    	
+			    	return;
+			    }
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new RetryableException();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new RetryableException();
+		}
+		
+	}
+
+	@Override
+	public void sendMessage(ChatMessage message) throws RetryableException {
+		// TODO Auto-generated method stub
+		String identifier = message.getSender()+"#"+message.getReceiver();
+		File file = new File(identifier+".txt");
+		try{
+			if(!file.exists()) {
+				file.createNewFile();
+			}
+			FileOutputStream fout = new FileOutputStream(file,true);
+			fout.write((message.getTimestamp()+ " "+ message.getMessage()+System.getProperty("line.separator")).getBytes());
+			fout.close();
+		}catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new RetryableException();
+		}
 	}
 
 }

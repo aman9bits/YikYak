@@ -113,7 +113,28 @@ public class ServerResource {
 	@GET
 	@Path("/addFriend")
 	public Response addFriend(@QueryParam("first") String first, @QueryParam("second") String second){
-		return null;
-		
+		AbstractDataManager manager = new FileDataManager();
+       	try {
+			manager.addFriend(first,second);
+		} catch (RetryableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Some error occurred. Please try later.").build();
+		}
+		return Response.status(Response.Status.OK).entity("Friend successfully added").build();
+	}
+	
+	@POST
+	@Path("/sendMessage")
+	public Response sendMessage(@Valid ChatMessage message){
+		AbstractDataManager manager = new FileDataManager();
+		try {
+			manager.sendMessage(message);
+		} catch (RetryableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Some error occurred. Please try later.").build();
+		}
+		return Response.status(Response.Status.OK).entity("Message successfully sent").build();
 	}
 }
