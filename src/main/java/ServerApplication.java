@@ -1,5 +1,9 @@
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 
+import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+
 import io.dropwizard.Application;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.setup.Bootstrap;
@@ -31,6 +35,12 @@ public class ServerApplication extends Application<ServerConfiguration> {
         //If you want to use @Auth to inject a custom Principal type into your resource
         environment.jersey().register(new AuthValueFactoryProvider.Binder<>(User.class));
     	final TestHealthCheck healthCheck = new TestHealthCheck();
-    	    environment.healthChecks().register("test", healthCheck);
+    	environment.healthChecks().register("test", healthCheck);
+    	
+    	Injector injector = Guice.createInjector(new AbstractModule() {
+    	      protected void configure() {
+    	    	  bind(AbstractDataManager.class).to(FileDataManager.class);
+    	      }
+    	    });
     }
 }

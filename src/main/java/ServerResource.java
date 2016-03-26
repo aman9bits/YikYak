@@ -19,6 +19,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Optional;
+import com.google.inject.Inject;
 
 import io.dropwizard.auth.Auth;
 import io.dropwizard.auth.AuthenticationException;
@@ -29,8 +30,8 @@ import io.dropwizard.validation.Validated;
 @Path("/")
 public class ServerResource {
 
-	//@Inject
-	
+	@Inject
+	AbstractDataManager manager;
 	private static final Logger LOGGER = LoggerFactory.getLogger(ServerResource.class);
 	 
 	@GET
@@ -82,8 +83,7 @@ public class ServerResource {
 	@Path("/signup")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML }) 
 	public Response signup(@Valid User user){
-		AbstractDataManager manager = new FileDataManager();
-       	try {
+		try {
 			manager.signup(user);
 		} catch (SignupFailedException e) {
 			e.printStackTrace();
@@ -143,7 +143,6 @@ public class ServerResource {
 	@GET
 	@Path("/loadMessages")
 	public Response loadMessages(@QueryParam(value = "first") String first, @QueryParam(value = "second") String second){
-		AbstractDataManager manager = new FileDataManager();
 		List<MessageWithoutReceiver> messages;
 		try {
 			messages = manager.loadMessages(first,second);
