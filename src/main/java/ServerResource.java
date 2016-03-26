@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 
 import org.json.*;
@@ -124,6 +125,7 @@ public class ServerResource {
 		return Response.status(Response.Status.OK).entity("Friend successfully added").build();
 	}
 	
+	
 	@POST
 	@Path("/sendMessage")
 	public Response sendMessage(@Valid ChatMessage message){
@@ -136,5 +138,19 @@ public class ServerResource {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Some error occurred. Please try later.").build();
 		}
 		return Response.status(Response.Status.OK).entity("Message successfully sent").build();
+	}
+	
+	@GET
+	@Path("/loadMessages")
+	public Response loadMessages(@QueryParam(value = "first") String first, @QueryParam(value = "second") String second){
+		AbstractDataManager manager = new FileDataManager();
+		List<MessageWithoutReceiver> messages;
+		try {
+			messages = manager.loadMessages(first,second);
+		} catch (RetryableException e) {
+			e.printStackTrace();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Some error occurred. Please try later.").build();
+		}
+		return Response.status(Response.Status.OK).entity(messages.toString()).build();
 	}
 }

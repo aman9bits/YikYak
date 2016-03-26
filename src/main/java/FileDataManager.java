@@ -4,7 +4,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class FileDataManager extends AbstractDataManager{
@@ -118,21 +120,60 @@ public class FileDataManager extends AbstractDataManager{
 
 	@Override
 	public void sendMessage(ChatMessage message) throws RetryableException {
-		// TODO Auto-generated method stub
-		String identifier = message.getSender()+"#"+message.getReceiver();
-		File file = new File(identifier+".txt");
+		String filename;
+		if(message.getSender().compareTo(message.getReceiver())>0){
+			filename = message.getSender()+"#"+message.getReceiver();
+		}else{
+			filename = message.getReceiver()+"#"+message.getSender();
+		}
+		File file = new File(filename+".txt");
 		try{
 			if(!file.exists()) {
 				file.createNewFile();
 			}
 			FileOutputStream fout = new FileOutputStream(file,true);
-			fout.write((message.getTimestamp()+ " "+ message.getMessage()+System.getProperty("line.separator")).getBytes());
+			fout.write((message.getTimestamp()+ " "+message.getSender()+" " + message.getMessage()+System.getProperty("line.separator")).getBytes());
 			fout.close();
 		}catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw new RetryableException();
 		}
+	}
+
+	@Override
+	public List<MessageWithoutReceiver> loadMessages(String first, String second) throws RetryableException {
+		// TODO Auto-generated method stub
+		List<MessageWithoutReceiver> messages = new ArrayList<>();
+		String filename;
+		if(first.compareTo(second)>0){
+			filename = first+"#"+second;
+		}else{
+			filename = second+"#"+first;
+		}
+		File file = new File(filename+".txt");
+		try{
+			if(!file.exists()) {
+				return messages;
+			}
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			String line;
+			while ((line = br.readLine()) != null) {
+			    String[] arr = line.split(" ");
+			    StringBuilder message = new StringBuilder(arr[2]);
+			    for(int i=3;i<arr.length;i++){
+			    	message.append(" ").append(arr[i]);
+			    }
+			    MessageWithoutReceiver mwr = new MessageWithoutReceiver(Long.parseLong(arr[0]),arr[1],message.toString());
+			    System.out.println(mwr.toString());
+			    messages.add(mwr);
+			}
+		}catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new RetryableException();
+		}
+		return messages;
 	}
 
 }
