@@ -3,6 +3,7 @@
   	<groupId>YakIndia</groupId>
   	<artifactId>Yik-Yak</artifactId>
   	<version>0.0.1-SNAPSHOT</version>
+  	
   	<name>Yik-Yak</name>
   	<description>A social network </description>
   
@@ -37,9 +38,24 @@
         	<type>jar</type>
        		 <version>19.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.mindrot</groupId>
+			<artifactId>jbcrypt</artifactId>
+			<version>0.3m</version>
+		</dependency>
+		
    	</dependencies>
    	<build>
    		<plugins>
+   			<plugin>
+	           <groupId>org.apache.maven.plugins</groupId>
+	           <artifactId>maven-compiler-plugin</artifactId>
+	           <version>2.3</version>
+	           <configuration>
+	               <source>1.8</source>
+	               <target>1.8</target>
+	           </configuration>
+       		</plugin>
    			<plugin>
 			    <groupId>org.apache.maven.plugins</groupId>
 			    <artifactId>maven-shade-plugin</artifactId>

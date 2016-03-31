@@ -63,7 +63,6 @@ public class ServerResource {
 			LOGGER.error(e.getMessage());
 			return Response.status(Response.Status.BAD_REQUEST).entity("Invalid input").build();
 		}
-		
 	}
 	
 	@GET

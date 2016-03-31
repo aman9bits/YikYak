@@ -1,17 +1,23 @@
 import java.io.IOException;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import com.google.common.base.Optional;
+import com.google.inject.Inject;
+
 import io.dropwizard.auth.AuthenticationException;
 import io.dropwizard.auth.Authenticator;
 import io.dropwizard.auth.basic.BasicCredentials;
 
 public class SimpleAuthenticator implements Authenticator<BasicCredentials, User> {
-    private AbstractDataManager dataManager = new FileDataManager();
-	public Optional<User> authenticate(BasicCredentials credentials) throws AuthenticationException {
-        String password;
+    @Inject
+	private AbstractDataManager dataManager;
+	
+    public Optional<User> authenticate(BasicCredentials credentials) throws AuthenticationException {
+        String hashedPassword;
 		try {
-			password = dataManager.getPassword(credentials.getUsername());
-			if (password.equals(credentials.getPassword())) {
+			hashedPassword = dataManager.getPassword(credentials.getUsername());
+			if (BCrypt.checkpw(credentials.getPassword(), hashedPassword)) {
 	            return Optional.of(new User(credentials.getUsername(),credentials.getPassword()));
 	        }else{
 	        	return Optional.absent();
@@ -24,7 +30,5 @@ public class SimpleAuthenticator implements Authenticator<BasicCredentials, User
 			e.printStackTrace();
 			return Optional.absent();
 		}
-		
-        
     }
 }
