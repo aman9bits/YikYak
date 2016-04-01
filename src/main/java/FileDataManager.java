@@ -12,7 +12,7 @@ import java.util.Set;
 public class FileDataManager extends AbstractDataManager{
 
 	@Override
-	public void signup(User user) throws SignupFailedException {
+	public void signup(User user) throws RetryableException {
 		// TODO Auto-generated method stub
 		try {
        		File file = new File("usernameList.txt");
@@ -25,25 +25,29 @@ public class FileDataManager extends AbstractDataManager{
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			throw new SignupFailedException("IO Exception occurred.");
+			throw new RetryableException("IO Exception occurred.");
 		} 
 	}
 
 	@Override
-	public String getPassword(String username) throws UserNotPresentException, IOException {
+	public String getPassword(String username) throws NonRetryableException, RetryableException{
 		File file = new File("usernameList.txt");
 		if(!file.exists()) {
-		    throw new UserNotPresentException();
+		    throw new NonRetryableException("File not present");
 		}
-		BufferedReader br = new BufferedReader(new FileReader(file));
-		String line;
-		while ((line = br.readLine()) != null) {
-		    String[] arr = line.split(" ");
-		    if(arr[0].equals(username)){
-		    	return arr[1];
-		    }
+		try{
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			String line;
+			while ((line = br.readLine()) != null) {
+			    String[] arr = line.split(" ");
+			    if(arr[0].equals(username)){
+			    	return arr[1];
+			    }
+			}
+			throw new NonRetryableException("Username not present");
+		}catch(IOException e){
+			throw new RetryableException("IO Exception occured");
 		}
-		throw new UserNotPresentException();
 	}
 
 	@Override

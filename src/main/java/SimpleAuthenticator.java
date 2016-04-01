@@ -25,10 +25,10 @@ public class SimpleAuthenticator implements Authenticator<BasicCredentials, User
 	        }else{
 	        	return Optional.absent();
 	        }
-		} catch (UserNotPresentException e) {
+		} catch (NonRetryableException e) {
 			e.printStackTrace();
 			return Optional.absent();
-		} catch (IOException e) {
+		} catch (RetryableException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return Optional.absent();
