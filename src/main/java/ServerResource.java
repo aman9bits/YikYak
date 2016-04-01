@@ -88,13 +88,13 @@ public class ServerResource {
 	@Path("/signup")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML }) 
 	public Response signup(String request){
-		JSONObject json = new JSONObject(request);
-		BasicCredentials cred = new BasicCredentials(json.getString("username"),json.getString("password")); 
-		User user = new User(json,cred);
+		JSONObject json = new JSONObject(request); 
 		try {
-			user.setPassword(encrypter.hashPassword(user.getPassword()));
+			json.put("hashedPassword", encrypter.hashPassword(json.getString("password")));
+			json.remove("password");
+			User user = User.build(json);
 			manager.signup(user);
-		} catch (SignupFailedException e) {
+		}catch(SignupFailedException e) {
 			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Signup failed").build();
 		}

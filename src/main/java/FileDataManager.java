@@ -176,4 +176,10 @@ public class FileDataManager extends AbstractDataManager{
 		return messages;
 	}
 
+	@Override
+	public User getUser(String username) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -11,41 +11,38 @@ import io.dropwizard.auth.basic.BasicCredentials;
 
 public class User implements Principal{
 	@JsonProperty
-	@NotEmpty
-	private String username;
+	BasicCredentials credentials;
 	
-	@NotEmpty
 	@JsonProperty
-	private String password;
+	String name;
+	
+	@JsonProperty
+	String phoneNumber;
+	
+	@JsonProperty
+	String email;
 	
 	public User() {
 		super();
 	}
-	public User(JSONObject json, BasicCredentials cred){
-		this.username = cred.getUsername();
-		this.password = cred.getPassword();
-	}
 
 	public String getName() {
-		// TODO Auto-generated method stub
-		return username;
+		return name;
 	}
 
-	public String getUsername() {
-		return username;
-	}
-	public void setUsername(String username) {
-		this.username = username;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
+	
 	@Override
 	public String toString() {
-		return username + " "+password;
+		return "To be changed";
+	}
+
+	public static User build(JSONObject json) {
+		User user = new User();
+		user.credentials = new BasicCredentials(json.getString("username"),json.getString("hashedPassword"));
+		user.name = json.getString("fname") + " " + json.getString("lname");
+		user.phoneNumber = json.getString("phoneNumber");
+		user.email = json.getString("email");
+		return user;
 	}
 
 }

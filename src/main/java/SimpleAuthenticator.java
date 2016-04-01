@@ -21,7 +21,7 @@ public class SimpleAuthenticator implements Authenticator<BasicCredentials, User
 		try {
 			hashedPassword = dataManager.getPassword(credentials.getUsername());
 			if (encrypter.checkPassword(credentials.getPassword(), hashedPassword)) {
-	            return Optional.of(new User(credentials.getUsername(),credentials.getPassword()));
+	            return Optional.of(dataManager.getUser(credentials.getUsername()));
 	        }else{
 	        	return Optional.absent();
 	        }

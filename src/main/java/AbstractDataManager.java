@@ -13,4 +13,6 @@ public abstract class AbstractDataManager {
 	public abstract void sendMessage(ChatMessage message) throws RetryableException;
 
 	public abstract List<MessageWithoutReceiver> loadMessages(String first, String second) throws RetryableException;
+
+	public abstract User getUser(String username);
 }
