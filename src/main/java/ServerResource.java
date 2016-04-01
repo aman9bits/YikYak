@@ -32,6 +32,13 @@ public class ServerResource {
 
 	@Inject
 	AbstractDataManager manager;
+	
+	@Inject
+	Authenticator<BasicCredentials,User> authenticator;
+	
+	@Inject
+	Encrypter encrypter;
+	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ServerResource.class);
 	 
 	@GET
@@ -45,7 +52,6 @@ public class ServerResource {
 	@POST
 	@Path("/login")
 	public Response login(String request){
-		Authenticator<BasicCredentials,User> authenticator = new SimpleAuthenticator();
 		try{
 			JSONObject json = new JSONObject(request);
 			BasicCredentials cred = new BasicCredentials(json.getString("username"),json.getString("password"));
@@ -81,8 +87,12 @@ public class ServerResource {
 	@POST
 	@Path("/signup")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML }) 
-	public Response signup(@Valid User user){
+	public Response signup(String request){
+		JSONObject json = new JSONObject(request);
+		BasicCredentials cred = new BasicCredentials(json.getString("username"),json.getString("password")); 
+		User user = new User(json,cred);
 		try {
+			user.setPassword(encrypter.hashPassword(user.getPassword()));
 			manager.signup(user);
 		} catch (SignupFailedException e) {
 			e.printStackTrace();

@@ -3,8 +3,11 @@ import java.security.Principal;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.json.JSONObject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.dropwizard.auth.basic.BasicCredentials;
 
 public class User implements Principal{
 	@JsonProperty
@@ -18,9 +21,9 @@ public class User implements Principal{
 	public User() {
 		super();
 	}
-	public User(String username, String password){
-		this.username = username;
-		this.password = password;
+	public User(JSONObject json, BasicCredentials cred){
+		this.username = cred.getUsername();
+		this.password = cred.getPassword();
 	}
 
 	public String getName() {

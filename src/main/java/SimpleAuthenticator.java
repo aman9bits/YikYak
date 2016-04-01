@@ -12,12 +12,15 @@ import io.dropwizard.auth.basic.BasicCredentials;
 public class SimpleAuthenticator implements Authenticator<BasicCredentials, User> {
     @Inject
 	private AbstractDataManager dataManager;
+    
+    @Inject
+    Encrypter encrypter;
 	
     public Optional<User> authenticate(BasicCredentials credentials) throws AuthenticationException {
         String hashedPassword;
 		try {
 			hashedPassword = dataManager.getPassword(credentials.getUsername());
-			if (BCrypt.checkpw(credentials.getPassword(), hashedPassword)) {
+			if (encrypter.checkPassword(credentials.getPassword(), hashedPassword)) {
 	            return Optional.of(new User(credentials.getUsername(),credentials.getPassword()));
 	        }else{
 	        	return Optional.absent();
