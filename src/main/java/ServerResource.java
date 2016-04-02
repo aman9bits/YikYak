@@ -32,14 +32,6 @@ public class ServerResource {
 	Encrypter encrypter;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ServerResource.class);
-	 
-	@GET
-	@Path("/test2")
-	@Timed
-	public Response Hello(){
-		System.out.println("Hello");
-		return Response.status(Response.Status.OK).entity("hello").build();
-	}
 	
 	@POST
 	@Path("/login")
