@@ -16,6 +16,7 @@ public class SimpleAuthenticator implements Authenticator<BasicCredentials, User
 	public Optional<User> authenticate(BasicCredentials credentials) throws AuthenticationException {
         String hashedPassword;
 		try {
+			System.out.println(dataManager);
 			hashedPassword = dataManager.getPassword(credentials.getUsername());
 			if (encrypter.checkPassword(credentials.getPassword(), hashedPassword)) {
 	            return Optional.of(dataManager.getUser(credentials.getUsername()));

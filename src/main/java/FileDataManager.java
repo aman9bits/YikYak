@@ -14,7 +14,6 @@ public class FileDataManager extends AbstractDataManager{
 	public FileDataManager(){}
 	@Override
 	public void signup(User user) throws RetryableException {
-		// TODO Auto-generated method stub
 		try {
        		File file = new File("usernameList.txt");
     		if(!file.exists()) {
@@ -24,7 +23,6 @@ public class FileDataManager extends AbstractDataManager{
 			fout.write((user+System.getProperty("line.separator")).getBytes());
 			fout.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw new RetryableException("IO Exception occurred.");
 		} 

@@ -45,7 +45,6 @@ public class ServerResource {
 				return Response.status(Response.Status.UNAUTHORIZED).entity("Username or password incorrect!").build();
 			}
 		}catch (AuthenticationException e) {
-			// TODO Auto-generated catch block
 			LOGGER.error(e.getMessage());
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Some problem occurred. Try Again").build();
 		}catch(JSONException e){
@@ -87,16 +86,13 @@ public class ServerResource {
 	@GET
 	@Path("/getFriendList/{username}")
 	public Response getFriendList(@PathParam(value = "username") String username){
-		AbstractDataManager manager = new FileDataManager();
 		Set<String> result;
 		try {
 			result = manager.getFriendList(username);
 		} catch (RetryableException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Some error occurred. Please try later.").build();
 		} catch (NonRetryableException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return Response.status(Response.Status.OK).entity("No friends found.").build();
 		}
@@ -106,11 +102,9 @@ public class ServerResource {
 	@GET
 	@Path("/addFriend")
 	public Response addFriend(@QueryParam("first") String first, @QueryParam("second") String second){
-		AbstractDataManager manager = new FileDataManager();
        	try {
 			manager.addFriend(first,second);
 		} catch (RetryableException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Some error occurred. Please try later.").build();
 		}
@@ -121,11 +115,9 @@ public class ServerResource {
 	@POST
 	@Path("/sendMessage")
 	public Response sendMessage(@Valid ChatMessage message){
-		AbstractDataManager manager = new FileDataManager();
 		try {
 			manager.sendMessage(message);
 		} catch (RetryableException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Some error occurred. Please try later.").build();
 		}
@@ -143,5 +135,11 @@ public class ServerResource {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Some error occurred. Please try later.").build();
 		}
 		return Response.status(Response.Status.OK).entity(messages.toString()).build();
+	}
+	
+	@GET
+	@Path("/test")
+	public void getSecretPlan(@Auth User user) {
+	    System.out.println("here");
 	}
 }
