@@ -1,7 +1,3 @@
-import java.io.IOException;
-
-import org.mindrot.jbcrypt.BCrypt;
-
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
 
@@ -16,7 +12,8 @@ public class SimpleAuthenticator implements Authenticator<BasicCredentials, User
     @Inject
     Encrypter encrypter;
 	
-    public Optional<User> authenticate(BasicCredentials credentials) throws AuthenticationException {
+    @Override
+	public Optional<User> authenticate(BasicCredentials credentials) throws AuthenticationException {
         String hashedPassword;
 		try {
 			hashedPassword = dataManager.getPassword(credentials.getUsername());

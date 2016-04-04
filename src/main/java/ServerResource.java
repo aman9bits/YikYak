@@ -10,7 +10,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.codahale.metrics.annotation.Timed;
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
 
@@ -26,7 +25,7 @@ public class ServerResource {
 	AbstractDataManager manager;
 	
 	@Inject
-	Authenticator<BasicCredentials,User> authenticator;
+	Authenticator authenticator;
 	
 	@Inject
 	Encrypter encrypter;

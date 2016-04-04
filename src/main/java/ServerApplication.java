@@ -1,3 +1,8 @@
+import io.dropwizard.auth.Authenticator;
+import javax.servlet.ServletRegistration;
+
+import org.atmosphere.cpr.ApplicationConfig;
+import org.atmosphere.cpr.AtmosphereServlet;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 
 import com.google.inject.AbstractModule;
@@ -23,8 +28,8 @@ public class ServerApplication extends Application<ServerConfiguration> {
 
     @Override
     public void run(ServerConfiguration configuration, Environment environment) {
-    	final ServerResource resource = new ServerResource();
-    	environment.jersey().register(resource);
+    	//final ServerResource resource = new ServerResource();
+    	//environment.jersey().register(resource);
     	environment.jersey().register(new AuthDynamicFeature(
                 new BasicCredentialAuthFilter.Builder<User>()
                     .setAuthenticator(new SimpleAuthenticator())
@@ -38,9 +43,22 @@ public class ServerApplication extends Application<ServerConfiguration> {
     	environment.healthChecks().register("test", healthCheck);
     	
     	Injector injector = Guice.createInjector(new AbstractModule() {
-    	      protected void configure() {
+    	      @Override
+			protected void configure() {
     	    	  bind(AbstractDataManager.class).to(FileDataManager.class);
+    	    	  bind(Authenticator.class).toInstance(new SimpleAuthenticator());
+    	    	  bind(Encrypter.class).to(BCryptEncrypter.class);
+    	    	  bind(ServerResource.class);
+    	    	  
     	      }
     	    });
+    	environment.jersey().register(injector.getInstance(ServerResource.class));
+    	AtmosphereServlet servlet = new AtmosphereServlet();
+    	servlet.framework().addInitParameter("com.sun.jersey.config.property.packages", "Yak-India.Yik-Yak.ServerResource.websocket");
+    	servlet.framework().addInitParameter(ApplicationConfig.WEBSOCKET_CONTENT_TYPE, "application/json");
+    	servlet.framework().addInitParameter(ApplicationConfig.WEBSOCKET_SUPPORT, "true");
+    	 
+    	ServletRegistration.Dynamic servletHolder = environment.servlets().addServlet("Chat", servlet);
+    	servletHolder.addMapping("/chat/*");
     }
 }

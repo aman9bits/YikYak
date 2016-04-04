@@ -9,6 +9,7 @@
   
   	<properties>
   		<dropwizard.version>0.9.2</dropwizard.version>
+  		<atmosphere-version>2.4.3</atmosphere-version>
   	</properties>
   
   	<dependencies>
@@ -43,7 +44,16 @@
 			<artifactId>jbcrypt</artifactId>
 			<version>0.3m</version>
 		</dependency>
-		
+		<dependency>
+		    <groupId>org.atmosphere</groupId>
+		    <artifactId>atmosphere-runtime</artifactId>
+		    <version>${atmosphere-version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.atmosphere</groupId>
+		    <artifactId>atmosphere-annotations</artifactId>
+		    <version>${atmosphere-version}</version>
+		</dependency>
    	</dependencies>
    	<build>
    		<plugins>

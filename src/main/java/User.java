@@ -1,8 +1,5 @@
 import java.security.Principal;
 
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.NotEmpty;
 import org.json.JSONObject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -26,6 +23,7 @@ public class User implements Principal{
 		super();
 	}
 
+	@Override
 	public String getName() {
 		return name;
 	}

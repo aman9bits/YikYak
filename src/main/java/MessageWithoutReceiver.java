@@ -46,6 +46,7 @@ public class MessageWithoutReceiver{
 		this.sender = sender;
 	}
 	
+	@Override
 	public String toString(){
 		try {
 			return mapper.writeValueAsString(this);

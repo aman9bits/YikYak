@@ -11,6 +11,7 @@ import java.util.Set;
 
 public class FileDataManager extends AbstractDataManager{
 
+	public FileDataManager(){}
 	@Override
 	public void signup(User user) throws RetryableException {
 		// TODO Auto-generated method stub
