@@ -45,6 +45,7 @@ public class FileDataManager extends AbstractDataManager{
 			    	return arr[1];
 			    }
 			}
+			br.close();
 			throw new NonRetryableException("Username not present");
 		}catch(IOException e){
 			throw new RetryableException("IO Exception occured");
@@ -70,6 +71,7 @@ public class FileDataManager extends AbstractDataManager{
 			    	}
 			    }
 			}
+			br.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -111,6 +113,7 @@ public class FileDataManager extends AbstractDataManager{
 			    	return;
 			    }
 			}
+			br.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -173,6 +176,7 @@ public class FileDataManager extends AbstractDataManager{
 			    System.out.println(mwr.toString());
 			    messages.add(mwr);
 			}
+			br.close();
 		}catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -184,7 +188,7 @@ public class FileDataManager extends AbstractDataManager{
 	@Override
 	public User getUser(String username) {
 		// TODO Auto-generated method stub
-		return null;
+		return new User();
 	}
 
 }

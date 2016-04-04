@@ -31,7 +31,7 @@ public class User implements Principal{
 	
 	@Override
 	public String toString() {
-		return "To be changed";
+		return credentials.getUsername()+" "+credentials.getPassword();
 	}
 
 	public static User build(JSONObject json) {

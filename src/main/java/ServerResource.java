@@ -25,7 +25,7 @@ public class ServerResource {
 	AbstractDataManager manager;
 	
 	@Inject
-	Authenticator authenticator;
+	Authenticator<BasicCredentials, User> authenticator;
 	
 	@Inject
 	Encrypter encrypter;

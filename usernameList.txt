@@ -1,15 +1,6 @@
-asd secret
-asd secret
-asd secret
-User@1b7b249
-User [username=qwe]
-qwe null
-qwe null
-qwe qweqwe
-qwe null
 qwe qwerty
-qwe qwerty
-qwe null
-qwe null
-qwe qwerty
-qwe qwerty
+To be changed
+asd $2a$10$wVm07LR.mGSnVP/TnMOZdep.CVmrSWlnKcQAiRrSAxskoKoAtmsNW
+aman9bits $2a$10$eyWMCpXnYt6xRgceYx1l4O.Oc.uvIni0jWDF4NYan2Sv9cKn59eGu
+aman9bits $2a$10$GeL5s0.AnlEPVYytEbJMkOWEoBCmS.Q9pWMMRS456y8p/sJEwyPmS
+aman9bits $2a$10$.X8fIlJrd150dhU5HbCWjODX/rfiGRlVhIrHsc30FhhQ6oyJrifwC

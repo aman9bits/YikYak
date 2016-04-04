@@ -8,6 +8,7 @@ import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.TypeLiteral;
 
 import io.dropwizard.Application;
 import io.dropwizard.setup.Environment;
@@ -46,7 +47,8 @@ public class ServerApplication extends Application<ServerConfiguration> {
     	      @Override
 			protected void configure() {
     	    	  bind(AbstractDataManager.class).to(FileDataManager.class);
-    	    	  bind(Authenticator.class).toInstance(new SimpleAuthenticator());
+    	    	  bind(new TypeLiteral<Authenticator<BasicCredentials,User>>(){}).toInstance(new SimpleAuthenticator());
+    	    	  bind(Authenticator.class).to(SimpleAuthenticator.class);
     	    	  bind(Encrypter.class).to(BCryptEncrypter.class);
     	    	  bind(ServerResource.class);
     	    	  
