@@ -31,7 +31,12 @@ public class ServerResource {
 	Encrypter encrypter;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ServerResource.class);
-	
+	/*	JSON for login
+	 * 	{
+	 * 		"username":"asd",
+	 * 		"password":"secret"
+	 * 	}
+	 */
 	@POST
 	@Path("/login")
 	public Response login(String request){
@@ -65,7 +70,16 @@ public class ServerResource {
 	public Response logout(){
 		return Response.status(Response.Status.UNAUTHORIZED).entity("You are successfully logged out.").build();
 	}
-	
+	/* Required JSON:
+	 * {
+	 * 		"username":"xyz",
+	 * 		"password":"secret",
+	 * 		"phoneNumber":"12312312313",
+	 * 		"email":"asd@asd.com",
+	 * 		"fname":"foo",
+	 * 		"lname":"bar"
+	 * 	}
+	 */
 	@POST
 	@Path("/signup")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML }) 
