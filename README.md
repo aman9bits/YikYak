@@ -9,3 +9,4 @@ A social network
 Technologies planned to be considered:
 <br/>a. Directory service instead of just database for password storage
 <br/>b. Comet instead of polling for push services. SSE etc, long polling etc yet to be studied.
+<br/>c. Token based authentication to be included.
